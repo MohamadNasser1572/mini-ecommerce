@@ -18,7 +18,7 @@ export function OrderConfirmationPage() {
     return (
       <div className="py-16 text-center">
         <p className="text-lg font-medium text-slate-900">Order not found</p>
-        <Link to="/" className="mt-4 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-700">
+        <Link to="/" className="mt-2 inline-flex h-10 items-center text-sm font-medium text-indigo-600 hover:text-indigo-700">
           Back to products
         </Link>
       </div>

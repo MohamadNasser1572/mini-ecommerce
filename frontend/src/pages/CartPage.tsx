@@ -36,7 +36,7 @@ export function CartPage() {
     <section>
       <h1 className="mb-6 text-2xl font-bold text-slate-900">Shopping cart</h1>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
         <ul className="divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white">
           {cart.items.map((item) => (
             <CartRow key={item.id} item={item} />
@@ -138,7 +138,7 @@ function CartRow({ item }: { item: CartItem }) {
               value={variant.id}
               disabled={busy}
               onChange={(event) => update.mutate({ variantId: Number(event.target.value) })}
-              className="h-10 max-w-full rounded-md border border-slate-300 bg-white px-2 text-sm text-slate-700"
+              className="h-10 max-w-full rounded-md border border-slate-300 bg-white px-2 text-base text-slate-700 sm:text-sm"
             >
               {product.variants.map((v) => (
                 <option key={v.id} value={v.id} disabled={v.stock === 0 && v.id !== variant.id}>
@@ -158,7 +158,7 @@ function CartRow({ item }: { item: CartItem }) {
             type="button"
             onClick={() => remove.mutate()}
             disabled={busy}
-            className="ml-auto text-sm font-medium text-red-600 hover:text-red-700"
+            className="ml-auto h-10 px-1 text-sm font-medium text-red-600 hover:text-red-700"
           >
             Remove
           </button>

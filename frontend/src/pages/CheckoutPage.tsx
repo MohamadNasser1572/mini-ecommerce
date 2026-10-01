@@ -41,12 +41,12 @@ export function CheckoutPage() {
 
   return (
     <section>
-      <Link to="/cart" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <Link to="/cart" className="inline-flex h-10 items-center text-sm font-medium text-indigo-600 hover:text-indigo-700">
         &larr; Back to cart
       </Link>
-      <h1 className="mb-6 mt-2 text-2xl font-bold text-slate-900">Checkout</h1>
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">Checkout</h1>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start">
         <div className="rounded-lg border border-slate-200 bg-white">
           <h2 className="border-b border-slate-200 px-4 py-3 font-semibold text-slate-900">Review your order</h2>
           <ul className="divide-y divide-slate-200">
@@ -58,7 +58,7 @@ export function CheckoutPage() {
                   className="h-16 w-16 shrink-0 rounded-md bg-slate-100 object-cover"
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-medium text-slate-900">{item.product.title}</p>
+                  <p className="line-clamp-2 font-medium text-slate-900">{item.product.title}</p>
                   <p className="text-sm text-slate-500">
                     {item.product.variants.length > 1 && <>{item.variant.name} &middot; </>}
                     {item.quantity} &times; {formatPrice(item.product.price)}

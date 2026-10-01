@@ -86,11 +86,11 @@ function ProductDetail({ product }: { product: Product }) {
 
   return (
     <article>
-      <Link to="/" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <Link to="/" className="inline-flex h-10 items-center text-sm font-medium text-indigo-600 hover:text-indigo-700">
         &larr; All products
       </Link>
 
-      <div className="mt-4 grid gap-6 md:grid-cols-2 md:gap-10">
+      <div className="mt-2 grid gap-6 md:grid-cols-2 md:gap-10">
         <div className="aspect-square overflow-hidden rounded-lg bg-slate-100">
           <img src={product.imageUrl} alt={product.title} className="h-full w-full object-cover" />
         </div>
@@ -115,7 +115,7 @@ function ProductDetail({ product }: { product: Product }) {
                     type="button"
                     onClick={() => selectVariant(v.id)}
                     aria-pressed={v.id === variant.id}
-                    className={`rounded-md border px-3 py-2 text-sm ${
+                    className={`min-h-10 rounded-md border px-3 py-2 text-sm ${
                       v.id === variant.id
                         ? "border-indigo-600 bg-indigo-50 font-medium text-indigo-700"
                         : "border-slate-300 text-slate-700 hover:border-slate-400"
@@ -138,7 +138,7 @@ function ProductDetail({ product }: { product: Product }) {
                 type="button"
                 onClick={() => cartMutation.mutate()}
                 disabled={outOfStock || cartMutation.isPending}
-                className="h-11 flex-1 rounded-md bg-indigo-600 px-5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+                className="h-11 w-full rounded-md bg-indigo-600 px-5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300 min-[400px]:flex-1"
               >
                 {cartMutation.isPending ? "Adding..." : outOfStock ? "Out of stock" : "Add to Cart"}
               </button>
@@ -146,7 +146,7 @@ function ProductDetail({ product }: { product: Product }) {
                 type="button"
                 onClick={() => wishlistMutation.mutate()}
                 disabled={wishlistMutation.isPending}
-                className="h-11 flex-1 rounded-md border border-slate-300 px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+                className="h-11 w-full rounded-md border border-slate-300 px-5 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60 min-[400px]:flex-1"
               >
                 {wishlistMutation.isPending ? "Saving..." : "Add to Wishlist"}
               </button>
@@ -188,7 +188,7 @@ function ProductNotFound() {
   return (
     <div className="py-16 text-center">
       <p className="text-lg font-medium text-slate-900">Product not found</p>
-      <Link to="/" className="mt-4 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <Link to="/" className="mt-2 inline-flex h-10 items-center text-sm font-medium text-indigo-600 hover:text-indigo-700">
         Back to products
       </Link>
     </div>

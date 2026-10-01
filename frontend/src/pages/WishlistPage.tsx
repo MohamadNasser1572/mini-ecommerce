@@ -92,7 +92,7 @@ function WishlistCard({ item }: { item: WishlistItem }) {
             type="button"
             onClick={() => move.mutate()}
             disabled={busy || outOfStock}
-            className="h-9 rounded-md bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300"
+            className="h-10 rounded-md bg-indigo-600 px-3 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-slate-300"
           >
             {move.isPending ? "Moving..." : "Move to cart"}
           </button>
@@ -100,7 +100,7 @@ function WishlistCard({ item }: { item: WishlistItem }) {
             type="button"
             onClick={() => remove.mutate()}
             disabled={busy}
-            className="text-sm font-medium text-red-600 hover:text-red-700"
+            className="h-10 px-1 text-sm font-medium text-red-600 hover:text-red-700"
           >
             Remove
           </button>
