@@ -6,20 +6,18 @@ It works on phones, tablets and desktops.
 
 ## What's inside
 
-| Folder      | What it is                                                |
-| ----------- | --------------------------------------------------------- |
-| `backend/`  | The API (Node.js, Express, TypeScript, Prisma, SQLite)    |
-| `frontend/` | The website (React, Vite, TypeScript, Tailwind CSS)       |
-
-## Do I need to install a database?
-
-**No.** The project uses **SQLite**, which stores the whole database in one file (`backend/prisma/dev.db`).
-You don't install or start any database server. The setup command below creates that file and fills it with sample products for you.
+| Folder      | What it is                                                  |
+| ----------- | ----------------------------------------------------------- |
+| `backend/`  | The API (Node.js, Express, TypeScript, Prisma, PostgreSQL)  |
+| `frontend/` | The website (React, Vite, TypeScript, Tailwind CSS)         |
 
 ## What you need
 
 - [Node.js](https://nodejs.org) **version 22 or newer** (check with `node -v`)
 - Git
+- A **PostgreSQL** database. Pick one of these:
+  - **Option A (easiest):** [Docker Desktop](https://www.docker.com/products/docker-desktop/). The project starts PostgreSQL for you.
+  - **Option B:** PostgreSQL installed on your computer ([download](https://www.postgresql.org/download/)).
 
 ## How to run it
 
@@ -32,7 +30,19 @@ git clone https://github.com/MohamadNasser1572/mini-ecommerce.git
 cd mini-ecommerce
 ```
 
-### 2. Start the backend (terminal 1)
+### 2. Start the database
+
+**Option A: with Docker.** Open Docker Desktop, then run this in the project folder:
+
+```bash
+docker compose up -d
+```
+
+This starts PostgreSQL with the user `shop`, password `shop` and a database called `mini_ecommerce`. Nothing else to do.
+
+**Option B: your own PostgreSQL.** Create an empty database called `mini_ecommerce` (for example in pgAdmin). In step 3 you will put your own username and password in the `.env` file.
+
+### 3. Start the backend (terminal 1)
 
 ```bash
 cd backend
@@ -49,7 +59,13 @@ cp .env.example .env
 Copy-Item .env.example .env
 ```
 
-Create the database and add the sample data, then start the server:
+If you use **Option B**, open `backend/.env` and change the first line to your own login:
+
+```
+DATABASE_URL="postgresql://YOUR_USER:YOUR_PASSWORD@localhost:5432/mini_ecommerce?schema=public"
+```
+
+Create the tables and add the sample data, then start the server:
 
 ```bash
 npm run setup
@@ -58,7 +74,7 @@ npm run dev
 
 You should see: `API running on http://localhost:4000`
 
-### 3. Start the frontend (terminal 2)
+### 4. Start the frontend (terminal 2)
 
 ```bash
 cd frontend
@@ -66,7 +82,7 @@ npm install
 npm run dev
 ```
 
-### 4. Open the shop
+### 5. Open the shop
 
 Go to **http://localhost:5173** and log in with:
 
@@ -77,15 +93,23 @@ Go to **http://localhost:5173** and log in with:
 
 Run these inside the `backend` folder.
 
-| Command          | What it does                                       |
-| ---------------- | -------------------------------------------------- |
-| `npm run dev`    | Starts the API                                     |
-| `npm run setup`  | Creates the database and adds the sample data      |
-| `npm run db:seed`| Resets the products, stock and demo user           |
+| Command           | What it does                                     |
+| ----------------- | ------------------------------------------------ |
+| `npm run dev`     | Starts the API                                   |
+| `npm run setup`   | Creates the tables and adds the sample data      |
+| `npm run db:seed` | Resets the products, stock and demo user         |
+
+To stop the Docker database: `docker compose down` (your data is kept).
 
 ## Something went wrong?
 
-- **"Missing environment variable: JWT_SECRET"**: you skipped the copy step. Create the `.env` file (step 2).
+- **"Can't reach database server at localhost:5432"**: PostgreSQL is not running. Start Docker Desktop and run `docker compose up -d`, or start your own PostgreSQL.
+- **"Authentication failed against database server"**: the username or password in `backend/.env` is wrong.
+- **Port 5432 already in use** when running Docker: PostgreSQL is already installed on your computer. Use Option B instead.
+- **"Missing environment variable: JWT_SECRET"**: you skipped the copy step. Create the `.env` file (step 3).
 - **"Cannot reach the server"** on the website: the backend is not running. Start it in terminal 1.
-- **Port already in use**: another app is using port 4000 or 5173. Close it, or change `PORT` in `backend/.env`.
 - **Want a fresh start?** Run `npm run db:seed` in the `backend` folder.
+
+## Credits
+
+Product photos are from [Unsplash](https://unsplash.com) and are free to use under the Unsplash License.

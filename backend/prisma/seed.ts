@@ -190,7 +190,7 @@ async function main() {
         title: p.title,
         description: p.description,
         price: p.price,
-        imageUrl: `https://picsum.photos/seed/${p.slug}/600/600`,
+        imageUrl: `/products/${p.slug}.jpg`,
         variants: { create: p.variants },
       },
     });
