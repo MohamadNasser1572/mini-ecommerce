@@ -23,15 +23,13 @@ model Product {
   slug        String           @unique
   title       String
   description String
-  price       Int // stored in cents to avoid floating point errors
+  price       Int
   imageUrl    String
   createdAt   DateTime         @default(now())
   variants    ProductVariant[]
   wishlist    WishlistItem[]
 }
 
-// Every product has at least one variant. Stock lives on the variant,
-// so "Black / M" and "White / L" can run out independently.
 model ProductVariant {
   id         Int            @id @default(autoincrement())
   productId  Int
@@ -82,8 +80,6 @@ model Order {
   @@index([userId])
 }
 
-// Title, variant name and price are copied at order time so the order
-// history stays correct even if the product changes later.
 model OrderItem {
   id           Int            @id @default(autoincrement())
   orderId      Int
