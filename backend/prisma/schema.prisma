@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime       @default(now())
+  cartItems    CartItem[]
+  wishlist     WishlistItem[]
+  orders       Order[]
+}
+
+model Product {
+  id          Int              @id @default(autoincrement())
+  slug        String           @unique
+  title       String
+  description String
+  price       Int // stored in cents to avoid floating point errors
+  imageUrl    String
+  createdAt   DateTime         @default(now())
+  variants    ProductVariant[]
+  wishlist    WishlistItem[]
+}
+
+// Every product has at least one variant. Stock lives on the variant,
+// so "Black / M" and "White / L" can run out independently.
+model ProductVariant {
+  id         Int            @id @default(autoincrement())
+  productId  Int
+  name       String
+  stock      Int
+  product    Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  wishlist   WishlistItem[]
+  orderItems OrderItem[]
+
+  @@unique([productId, name])
+  @@index([productId])
+}
+
+model CartItem {
+  id        Int            @id @default(autoincrement())
+  userId    Int
+  variantId Int
+  quantity  Int
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, variantId])
+}
+
+model WishlistItem {
+  id        Int            @id @default(autoincrement())
+  userId    Int
+  productId Int
+  variantId Int
+  createdAt DateTime       @default(now())
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant   ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  total     Int
+  createdAt DateTime    @default(now())
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     OrderItem[]
+
+  @@index([userId])
+}
+
+// Title, variant name and price are copied at order time so the order
+// history stays correct even if the product changes later.
+model OrderItem {
+  id           Int            @id @default(autoincrement())
+  orderId      Int
+  variantId    Int
+  productTitle String
+  variantName  String
+  unitPrice    Int
+  quantity     Int
+  order        Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant      ProductVariant @relation(fields: [variantId], references: [id])
+
+  @@index([orderId])
+}
