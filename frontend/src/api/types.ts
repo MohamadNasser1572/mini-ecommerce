@@ -40,3 +40,19 @@ export type WishlistItem = {
   product: Omit<Product, "variants">;
   variant: Variant;
 };
+
+export type OrderItem = {
+  id: number;
+  variantId: number;
+  productTitle: string;
+  variantName: string;
+  unitPrice: number;
+  quantity: number;
+};
+
+export type Order = {
+  id: number;
+  total: number;
+  createdAt: string;
+  items: OrderItem[];
+};

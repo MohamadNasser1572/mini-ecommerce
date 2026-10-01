@@ -6,6 +6,7 @@ import { ApiError } from "../api/client";
 import { fetchProduct, productKey, productsKey } from "../api/products";
 import type { Product } from "../api/types";
 import { addToWishlist, wishlistKey } from "../api/wishlist";
+import { QuantityStepper } from "../components/QuantityStepper";
 import { ErrorState, LoadingState } from "../components/StatusMessage";
 import { formatPrice } from "../lib/format";
 
@@ -83,13 +84,6 @@ function ProductDetail({ product }: { product: Product }) {
     setFeedback(null);
   }
 
-  function changeQuantity(value: number) {
-    if (Number.isNaN(value)) {
-      return;
-    }
-    setQuantity(Math.max(1, Math.min(value, Math.max(maxQuantity, 1))));
-  }
-
   return (
     <article>
       <Link to="/" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
@@ -137,37 +131,7 @@ function ProductDetail({ product }: { product: Product }) {
           <StockLabel stock={variant.stock} />
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="flex w-fit items-center rounded-md border border-slate-300">
-              <button
-                type="button"
-                aria-label="Decrease quantity"
-                onClick={() => changeQuantity(quantity - 1)}
-                disabled={outOfStock || quantity <= 1}
-                className="h-11 w-11 text-lg text-slate-700 disabled:text-slate-300"
-              >
-                &minus;
-              </button>
-              <input
-                type="number"
-                inputMode="numeric"
-                aria-label="Quantity"
-                min={1}
-                max={maxQuantity}
-                value={quantity}
-                disabled={outOfStock}
-                onChange={(event) => changeQuantity(event.target.valueAsNumber)}
-                className="h-11 w-14 border-x border-slate-300 text-center text-base [appearance:textfield] disabled:bg-slate-50 [&::-webkit-inner-spin-button]:appearance-none"
-              />
-              <button
-                type="button"
-                aria-label="Increase quantity"
-                onClick={() => changeQuantity(quantity + 1)}
-                disabled={outOfStock || quantity >= maxQuantity}
-                className="h-11 w-11 text-lg text-slate-700 disabled:text-slate-300"
-              >
-                +
-              </button>
-            </div>
+            <QuantityStepper value={quantity} max={maxQuantity} onChange={setQuantity} disabled={outOfStock} />
 
             <div className="flex flex-1 flex-col gap-3 min-[400px]:flex-row">
               <button
